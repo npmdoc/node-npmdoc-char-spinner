@@ -1,0 +1,166 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/isaacs/char-spinner"
+
+    >char-spinner (v1.0.1)</a>
+</h1>
+<h4>Put a little spinner on process.stderr, as unobtrusively as possible.</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.char-spinner">module char-spinner</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.char-spinner.char-spinner">
+            function <span class="apidocSignatureSpan"></span>char-spinner
+            <span class="apidocSignatureSpan">(opt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.char-spinner.clear">
+            function <span class="apidocSignatureSpan">char-spinner.</span>clear
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.char-spinner" id="apidoc.module.char-spinner">module char-spinner</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.char-spinner.char-spinner" id="apidoc.element.char-spinner.char-spinner">
+        function <span class="apidocSignatureSpan"></span>char-spinner
+        <span class="apidocSignatureSpan">(opt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function spinner(opt) {
+  opt = opt || {}
+  var str = opt.stream || process.stderr
+  var tty = typeof opt.tty === &#x27;boolean&#x27; ? opt.tty : true
+  var string = opt.string || &#x27;/-\\|&#x27;
+  var ms = typeof opt.interval === &#x27;number&#x27; ? opt.interval : 50
+  if (ms &#x3c; 0) ms = 0
+  if (tty &#x26;&#x26; !str.isTTY) return false
+  var CR = str.isTTY ? &#x27;\u001b[0G&#x27; : &#x27;\u000d&#x27;;
+  var CLEAR = str.isTTY ? &#x27;\u001b[2K&#x27; : &#x27;\u000d \u000d&#x27;;
+
+  var s = 0
+  var sprite = string.split(&#x27;&#x27;)
+  var wrote = false
+
+  var delay = typeof opt.delay === &#x27;number&#x27; ? opt.delay : 2
+
+  var interval = setInterval(function() {
+    if (--delay &#x3e;= 0) return
+    s = ++s % sprite.length
+    var c = sprite[s]
+    str.write(c + CR)
+    wrote = true
+  }, ms)
+
+  var unref = typeof opt.unref === &#x27;boolean&#x27; ? opt.unref : true
+  if (unref &#x26;&#x26; typeof interval.unref === &#x27;function&#x27;) {
+    interval.unref()
+  }
+
+  var cleanup = typeof opt.cleanup === &#x27;boolean&#x27; ? opt.cleanup : true
+  if (cleanup) {
+    process.on(&#x27;exit&#x27;, function() {
+      if (wrote) {
+          str.write(CLEAR);
+      }
+    })
+  }
+
+  module.exports.clear = function () {
+    str.write(CLEAR);
+  };
+
+  return interval
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.char-spinner.clear" id="apidoc.element.char-spinner.clear">
+        function <span class="apidocSignatureSpan">char-spinner.</span>clear
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">clear = function () {}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
